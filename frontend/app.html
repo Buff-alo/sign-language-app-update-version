@@ -472,7 +472,7 @@
     <div class="camera-wrap">
       <div class="cam-placeholder" id="placeholder">
         <i class="fa-solid fa-camera-slash"></i>
-        <p>Camera is off — click Start to begin</p>
+        <p>Camera is off  click Start to begin</p>
       </div>
       <video id="video" autoplay playsinline></video>
       <canvas id="canvas" style="display:none"></canvas>
@@ -482,7 +482,7 @@
       </div>
 
       <div class="pred-badge" id="predBadge">
-        <div class="pred-letter alpha" id="predLetter">—</div>
+        <div class="pred-letter alpha" id="predLetter"></div>
         <div class="pred-conf"         id="predConf">Waiting...</div>
         <div class="pred-mode-tag alpha" id="predModeTag">
           <i class="fa-solid fa-font"></i> Alphabets
@@ -521,7 +521,7 @@
       </div>
       <div class="mode-indicator alpha" id="modeIndicator">
         <i class="fa-solid fa-font" id="modeIcon"></i>
-        <span id="modeLabel">Alphabets — detecting A to Z</span>
+        <span id="modeLabel">Alphabets  detecting A to Z</span>
       </div>
 
       <div class="card-label">
@@ -558,13 +558,13 @@
       </div>
       <div class="stats-grid">
         <div class="stat">
-          <div class="stat-val alpha" id="statDetected">—</div>
+          <div class="stat-val alpha" id="statDetected"></div>
           <div class="stat-lbl">
             <i class="fa-solid fa-hand"></i> Current sign
           </div>
         </div>
         <div class="stat">
-          <div class="stat-val alpha" id="statConf">—</div>
+          <div class="stat-val alpha" id="statConf"></div>
           <div class="stat-lbl">
             <i class="fa-solid fa-gauge-high"></i> Confidence
           </div>
@@ -624,7 +624,7 @@
     <h3>Your free trial has ended</h3>
     <p>You've used your 20 minutes of free sign language detection. Create a free account to keep detecting with no time limit.</p>
     <div class="modal-actions">
-      <a href="signup.html" class="btn btn-primary btn-block"><i class="fa-solid fa-user-plus"></i> Sign Up — it's free</a>
+      <a href="signup.html" class="btn btn-primary btn-block"><i class="fa-solid fa-user-plus"></i> Sign Up  it's free</a>
       <a href="signin.html" class="btn btn-secondary btn-block"><i class="fa-solid fa-right-to-bracket"></i> I already have an account</a>
     </div>
     <button class="modal-dismiss" onclick="dismissTrialModal()">Maybe later</button>
@@ -641,7 +641,7 @@
       <i class="fa-solid fa-coins"></i>
     </div>
     <h3>Out of credits</h3>
-    <p>You've used all your credits. Top up to continue detecting signs — starting from GHS 5.</p>
+    <p>You've used all your credits. Top up to continue detecting signs  starting from GHS 5.</p>
     <div class="modal-actions">
       <button class="btn btn-primary btn-block" onclick="document.getElementById('noCreditsModal').classList.remove('show'); Auth.showTopupModal();">
         <i class="fa-solid fa-plus"></i> Top Up Now
@@ -762,7 +762,7 @@
     const modeLabel = document.getElementById('modeLabel');
     if (isAlpha) {
       modeIcon.className  = 'fa-solid fa-font';
-      modeLabel.textContent = 'Alphabets — detecting A to Z';
+      modeLabel.textContent = 'Alphabets  detecting A to Z';
       predModeTag.innerHTML = '<i class="fa-solid fa-font"></i> Alphabets';
       if (!appLocked && !creditLocked) btnStart.innerHTML = '<i class="fa-solid fa-video"></i> Start Camera';
       document.getElementById('tipsList').innerHTML = `
@@ -774,7 +774,7 @@
       `;
     } else {
       modeIcon.className  = 'fa-solid fa-hashtag';
-      modeLabel.textContent = 'Numbers — detecting 0 to 9';
+      modeLabel.textContent = 'Numbers  detecting 0 to 9';
       predModeTag.innerHTML = '<i class="fa-solid fa-hashtag"></i> Numbers';
       if (!appLocked && !creditLocked) btnStart.innerHTML = '<i class="fa-solid fa-video"></i> Start Camera';
       document.getElementById('tipsList').innerHTML = `
@@ -788,7 +788,7 @@
 
     windowStart = null;
     windowBest  = { label: null, confidence: -1 };
-    predLetter.textContent = '—';
+    predLetter.textContent = '';
     predConf.textContent   = 'Waiting...';
   }
 
@@ -847,7 +847,7 @@
 
   // ── Deduct credits for a detected letter ─────────────────────────
   async function chargeForLetter() {
-    if (!isLoggedIn || userBalance === null) return true; // guest — no charge
+    if (!isLoggedIn || userBalance === null) return true; // guest  no charge
     const cost = Auth.COST_PER_LETTER;
 
     // Optimistic local deduction for instant UI feedback
@@ -860,13 +860,13 @@
 
     if (!result.ok) {
       if (result.reason === 'insufficient_credits') {
-        // Server confirmed balance is 0 — lock the camera
+        // Server confirmed balance is 0  lock the camera
         userBalance = 0;
         Auth.updateCreditBadge(0);
         lockCreditApp();
         return false;
       }
-      // Other error — don't block detection, but log it
+      // Other error  don't block detection, but log it
       console.warn('Credit deduction issue:', result.reason);
     } else {
       // Keep local state in sync with server truth
@@ -934,7 +934,7 @@
 
       const { label, confidence } = data;
 
-      predLetter.textContent = label === 'nothing' ? '—'
+      predLetter.textContent = label === 'nothing' ? ''
                              : label === 'space'   ? '␣'
                              : label;
       predConf.textContent   = `${confidence}% confident`;
@@ -1070,7 +1070,7 @@
 
     document.getElementById('navActions').innerHTML = `
       <div class="credit-badge ${balClass}" id="creditBadge" title="Your detection credits">
-        <i class="fa-solid fa-coins"></i> GHS ${balance !== null ? balance.toFixed(2) : '—'}
+        <i class="fa-solid fa-coins"></i> GHS ${balance !== null ? balance.toFixed(2) : ''}
       </div>
       <button class="btn-topup" onclick="Auth.showTopupModal()">
         <i class="fa-solid fa-plus"></i> Top Up

@@ -1,0 +1,9 @@
+#Python
+*.pyc
+*.pyo
+*.pyd
+*.pywallet
+*.cache
+.venv
+.env
+__pycache__

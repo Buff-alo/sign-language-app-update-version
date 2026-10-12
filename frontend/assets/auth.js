@@ -9,7 +9,7 @@
   const TRIAL_KEY = 'sld_trial_start';
 
   // Cost per letter detected (GHS)
-  const COST_PER_LETTER = 0.02;
+  const COST_PER_LETTER = 0.002;
 
   // Quick-select top-up amounts shown in the modal (GHS)
   const TOPUP_PRESETS = [5, 10, 20, 50, 100];
@@ -118,7 +118,7 @@
     return parseFloat(data.balance);
   }
 
-  // Deduct via tamper-proof server-side RPC — client cannot UPDATE credits directly
+  // Deduct via tamper-proof server-side RPC  client cannot UPDATE credits directly
   async function deductCredits(amount) {
     const { data, error } = await client.rpc('deduct_credits', { p_amount: amount });
     if (error) return { ok: false, reason: error.message };
@@ -158,7 +158,7 @@
           ]
         },
 
-        // Paystack requires a plain synchronous function — no async allowed.
+        // Paystack requires a plain synchronous function  no async allowed.
         // All async work goes in .then() chains.
         callback: function (response) {
           if (response.status !== 'success') return;
@@ -167,7 +167,7 @@
 
           // 1. Call our Edge Function to independently verify the payment with
           //    Paystack's API and apply credits + flip status to 'success'.
-          //    This is the authoritative credit application — no webhook delay.
+          //    This is the authoritative credit application  no webhook delay.
           fetch(VERIFY_TOPUP_URL, {
             method:  'POST',
             headers: {
@@ -179,7 +179,7 @@
           .then(function(res) { return res.json(); })
           .then(function(result) {
             if (result.ok) {
-              // Credits applied — fire the UI success handler with the new balance
+              // Credits applied  fire the UI success handler with the new balance
               onSuccess(amountGHS, ref, result.balance);
             } else {
               console.error('verify-topup failed:', result.reason);
@@ -196,7 +196,7 @@
           // NOTE: credit_topups is written exclusively by the verify-topup
           // Edge Function (via the apply_topup RPC), inside the same
           // transaction as the credits update. Do NOT insert into
-          // credit_topups from the client — doing so races with the
+          // credit_topups from the client  doing so races with the
           // Edge Function and can mark a row 'success' before credits
           // are actually applied, which makes apply_topup's idempotency
           // check wrongly skip the real update. It's also a security
@@ -205,7 +205,7 @@
         },
 
         onClose: function () {
-          // User dismissed without paying — nothing to do.
+          // User dismissed without paying  nothing to do.
         }
       });
     } catch (err) {
